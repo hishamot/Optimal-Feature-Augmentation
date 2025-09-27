@@ -5,7 +5,6 @@
 
 
 <h2>Optimal Transformations Selection Problem</h2>
-<p>This section focuses on the selection of those transformations that are statistically significant with positive correlation to the correct prediction of the model, referred to as optimal transformations in the remainder of this paper.</p>
 
 <p>Let <span class="variable">F</span> denote the feature map at location <span class="variable">L</span> of the model and <span class="variable">t</span> denote a transformation set which has transformations like random vertical flip, random horizontal flip, random rotation, etc applied to obtain the transformed data. Then, the transformed feature map <span class="variable">F'</span> is defined as:</p>
 
