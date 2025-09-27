@@ -1,75 +1,194 @@
-### Optimal Transformations Selection at $L_i$
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Optimal Transformations Selection for Feature Augmentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            margin-top: 30px;
+            color: #2980b9;
+        }
+        .equation {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .equation-number {
+            float: right;
+            font-weight: bold;
+        }
+        .figure {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .figure img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        .figure-caption {
+            font-style: italic;
+            margin-top: 10px;
+            color: #7f8c8d;
+        }
+        .reference {
+            font-size: 0.9em;
+            margin-left: 20px;
+            text-indent: -20px;
+        }
+        .subsection {
+            margin-top: 30px;
+        }
+        .authors {
+            font-style: italic;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .variable {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
 
-The optimal feature augmentation strategy can be divided into two phases:
+<h1>Optimal Transformations Selection for Feature Augmentation</h1>
 
-1. Optimal feature selection phase
-2. Model training phase
+<div class="authors">
+Venkatesh, Vaddadi, Raji Susan Mathew, and Phaneendra K. Yalavarthy. "Optimal Transformations Selection for Feature Augmentation in Deep Learning Models." Journal of Machine Learning Research (2024): 1-17.
+<a href="#">[manuscript]</a>
+</div>
 
-Similar to finding optimal transformations at the input level ($L_0$), the approach can be extended to any intermediate level feature map $F_i$ at location $L_i$.
+<h2>Optimal Transformations Selection Problem</h2>
+<p>This section focuses on the selection of those transformations that are statistically significant with positive correlation to the correct prediction of the model, referred to as optimal transformations in the remainder of this paper.</p>
 
-First, consider the feature map $F_1$ (at $L_1$) defined as:
+<p>Let <span class="variable">F</span> denote the feature map at location <span class="variable">L</span> of the model and <span class="variable">t</span> denote a transformation set which has transformations like random vertical flip, random horizontal flip, random rotation, etc applied to obtain the transformed data. Then, the transformed feature map <span class="variable">F'</span> is defined as:</p>
 
-$$
-F_1 = C_1(F_0')
-\tag{5a}
-$$
+<div class="equation">
+F' = t(F) <span class="equation-number">(1)</span>
+</div>
 
-where $C_1$ denotes the convolution operation between $L_0$ and $L_1$.
+<p>Consider <span class="variable">n</span> arbitrary transformations <span class="variable">t₁, t₂, ..., tₙ</span> and the corresponding binary variables <span class="variable">x</span> = [x₁, x₂, ..., xₙ] which take value either 0 or 1. When <span class="variable">xᵢ</span> takes the value 1, then <span class="variable">tᵢ</span> is considered for performing the transformation on the feature maps. Let the input image (equivalent to the feature map at the input) be denoted as <span class="variable">F₀</span>. A logistic test [1] is used to identify the optimal transformations. For this, a binary response variable <span class="variable">y</span>,</p>
 
-At each intermediate location, consider $n$ arbitrary transformations
-$\mathbf{t} = \{t_1, t_2, \dots, t_n\}$
-and the corresponding binary variables
-$\mathbf{x} = [x_1, x_2, \dots, x_n]$.
+<div class="equation">
+y = { 1; correct image classification<br>0; incorrect image classification } <span class="equation-number">(2)</span>
+</div>
 
-As discussed previously, the coefficient values $\beta_i$ and the corresponding $p$-value of the associated $x_i$ in $L_1$ are computed. The resultant subset of optimal transformations at $L_1$ is denoted by $T_1$, and the corresponding transformed feature map is denoted by $F_1'$:
+<p>and the probability of successfully classifying the image for a given <span class="variable">x</span>,</p>
 
-$$
-F_1' = T_1(F_1)
-$$
+<div class="equation">
+p(x) = p(y=1/x) <span class="equation-number">(3)</span>
+</div>
 
-At location $L_1$, the augmented feature map $\tilde{F}_1$ is computed as:
+<p>are considered. As <span class="variable">x</span> can take 2ⁿ possible combinations of binary variables <span class="variable">xᵢ</span>, there will be a resultant probability value associated with each possible combination. As the value of <span class="variable">p(x)</span> is between 0 and 1 and <span class="variable">xᵢ</span>'s are independent binary variables, they are fitted using the logistic regression model defined by</p>
 
-$$
-\tilde{F}_1 =
-\begin{cases}
-[F_1, F_1'], & \text{if } T_1 \neq \varnothing \\ \\
-F_1, & \text{otherwise.}
-\end{cases}
-\tag{6}
-$$
+<div class="equation">
+p(x) = exp(β₀ + Σβᵢxᵢ) / (1 + exp(β₀ + Σβᵢxᵢ)) <span class="equation-number">(4)</span>
+</div>
 
-Using $\tilde{F}_1$ as the feature map at location $L_1$ and passing it to the next layer (instead of $F_1'$) doubles the computation for the rest of the model. Consequently, the feature map $F_2$ at location $L_2$ is given by:
+<p>Here <span class="variable">β₀</span> to <span class="variable">βₖ</span> denote the coefficients of the model [1, 2]. Equation (4) can be rewritten in its logarithmic form as</p>
 
-$$
-F_2 = C_2(\tilde{F}_1)
-\tag{7}
-$$
+<div class="equation">
+ln(p(x)/(1 - p(x))) = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ <span class="equation-number">(5)</span>
+</div>
 
-where $C_2$ is the convolution operation between $L_1$ and $L_2$.
+<p>The estimates of the coefficients <span class="variable">βₖ</span> can be obtained by the maximum likelihood method [3]. Subsequently, a hypothesis test is conducted on the regression coefficients to evaluate the significance of the associated transformation. The significance of each transformation is analyzed using the hypothesis test.</p>
 
-At location $L_2$, the selection of optimal features is performed using $F_2$, which has double the number of features compared to $F_1$.
+<div class="equation">
+H₀: βₖ = 0, H₁: βₖ ≠ 0 <span class="equation-number">(6)</span>
+</div>
 
-In the general case, the feature map at location $L_i$ is given by:
+<p>where <span class="variable">H₀</span> represents the null hypothesis, and <span class="variable">H₁</span> represents the alternative hypothesis. If the null hypothesis (<span class="variable">H₀</span>) is accepted (p > α), where α denotes the significance level, the transformation <span class="variable">xᵢ</span>, associated with the coefficient <span class="variable">βᵢ</span>, is not statistically significant in the model. Conversely, if the alternative hypothesis (<span class="variable">H₁</span>) is accepted (p < α), the transformation <span class="variable">xᵢ</span> shows statistical significance [2]. The sign of the coefficient (<span class="variable">βᵢ</span>) indicates whether the corresponding transformation has a positive or negative correlation to the model performance. Finally, those transformations with statistically significant positive coefficients are selected. This selected subset of available transformations at the input of the model is the optimal transformations at <span class="variable">L₀</span>, denoted as <span class="variable">T₀</span>, <span class="variable">T₀</span> = { tᵢ ∈ T | xᵢ is significant with pᵢ < α and βᵢ > 0 }. The input feature map <span class="variable">F₀</span> is transformed using the selected optimal transformation <span class="variable">T₀</span>,</p>
 
-$$
-F_i = C_i(\tilde{F}_{i-1})
-$$
+<div class="equation">
+F₀' = { T₀(F₀); if T₀ ≠ ∅<br>F₀; otherwise } <span class="equation-number">(7)</span>
+</div>
 
-where $C_i$ denotes the convolution block between locations $L_{i-1}$ and $L_i$, and $\tilde{F}_{i-1}$ is the augmented feature map at $L_{i-1}$.
+<p>where ∅ denotes a null set. The transformed feature map <span class="variable">F₀'</span> is fed to the next layer, i.e., unlike normal data augmentation, only the transformed version of the input is fed to the next layer.</p>
 
-With at least one transformation selected at each $L_i$, $F_i$ has $2^{i-1}$ times the number of feature maps as $F_1$. This $F_i$ is further used to find the set of optimal transformations $T_i$ at $L_i$.
+<div class="figure">
+<img src="Figure_1.png" alt="Architecture showing location-wise feature augmentation">
+<div class="figure-caption">Figure 1: Architecture showing location-wise feature augmentation with the light green highlighted feature maps indicating those considered for optimal transformation selection, and the red highlighted feature maps correspond to transformed feature maps.</div>
+</div>
 
-Thus, the augmented feature map at $L_i$ is given by:
+<div class="subsection">
+<h2>Optimal Transformations Selection at Lᵢ</h2>
 
-$$
-F_i' = T_i(F_i)
-$$
+<p>The optimal feature augmentation strategy can be divided into two-phase optimal feature selection phase and the actual model training phase.</p>
 
-$$
-\tilde{F}_i =
-\begin{cases}
-[F_i, F_i'], & \text{if } T_i \neq \varnothing \\ \\
-F_i, & \text{otherwise.}
-\end{cases}
-\tag{8}
-$$
+<p>Similar to finding optimal transformations at the input level (L₀), the approach can be extended to any intermediate level feature map Fᵢ at location Lᵢ. For this, first consider the features map F₁ (at L₁) defined as</p>
+
+<div class="equation">
+F₁ = C₁(F₀') <span class="equation-number">(8)</span>
+</div>
+
+<p>where C₁ denotes the convolution operation between L₀ and L₁. Similar to the input location L₀, at each intermediate location consider n arbitrary transformations t = t₁, t₂, ..., tₙ and the corresponding binary variables x = [x₁, x₂, ..., xₙ]. As discussed in the previous subsection, the coefficient values βᵢ and the corresponding p-value of the associated xᵢ in L₁ are computed. The resultant subset of optimal transformations at L₁ is denoted by T₁ and the corresponding transformed feature map is denoted by F'₁, where</p>
+
+<div class="equation">
+F₁' = T₁(F₁) <span class="equation-number">(9)</span>
+</div>
+
+<p>At the location L₁, augmented feature map F̃₁ is computed as</p>
+
+<div class="equation">
+F̃₁ = { [F₁, F₁']; if T₁ ≠ ∅<br>F₁; otherwise } <span class="equation-number">(10)</span>
+</div>
+
+<p>Using F̃₁ as the feature map at location L₁ and passing to the next layer of the model instead of F₁', in turn, doubles the computation for the rest of the model. Consequently, the feature map F₂ at location L₂ is given by</p>
+
+<div class="equation">
+F₂ = C₂(F̃₁) <span class="equation-number">(11)</span>
+</div>
+
+<p>where denoting C₂ as the convolution operation between locations L₁ and L₂. At location L₂, the selection of optimal features is performed using the feature map F₂ which has double the number of features compared to the feature map F₁. In the general case, the feature map at the location Lᵢ is given by</p>
+
+<div class="equation">
+Fᵢ = Cᵢ(F̃ᵢ₋₁) <span class="equation-number">(12)</span>
+</div>
+
+<p>where Cᵢ denotes the convolution block between locations Lᵢ₋₁ and Lᵢ and F̃ᵢ₋₁ is the augmented feature map at Lᵢ₋₁. With at least one transformation selected at each Lᵢ, Fᵢ has 2ⁱ⁻¹ times the number of feature maps as F₁. This Fᵢ is further used to find the set of optimal transformations Tᵢ at Lᵢ. Thus the augmented feature map at Lᵢ is given by</p>
+
+<div class="equation">
+Fᵢ' = Tᵢ(Fᵢ) <span class="equation-number">(13)</span>
+</div>
+
+<div class="equation">
+F̃ᵢ = { [Fᵢ, Fᵢ'], if Tᵢ ≠ ∅<br>Fᵢ, otherwise } <span class="equation-number">(14)</span>
+</div>
+</div>
+
+<h2>References</h2>
+<div class="reference">[1] Hosmer, D. W., Lemeshow, S., & Sturdivant, R. X. (2013). Applied logistic regression. John Wiley & Sons.</div>
+<div class="reference">[2] Ottoni, A. L. C., et al. (2023). Tuning data augmentation for deep learning models. Journal of Machine Learning Research.</div>
+<div class="reference">[3] Myung, I. J. (2003). Tutorial on maximum likelihood estimation. Journal of Mathematical Psychology.</div>
+
+</body>
+</html>
