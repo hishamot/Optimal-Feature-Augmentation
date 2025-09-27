@@ -1,91 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Optimal Transformations Selection for Feature Augmentation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        h1, h2 {
-            color: #2c3e50;
-        }
-        h1 {
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            text-align: center;
-        }
-        h2 {
-            margin-top: 30px;
-            color: #2980b9;
-        }
-        .equation {
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            font-family: monospace;
-        }
-        .equation-number {
-            float: right;
-            font-weight: bold;
-        }
-        .figure {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .figure img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-        }
-        .figure-caption {
-            font-style: italic;
-            margin-top: 10px;
-            color: #7f8c8d;
-        }
-        .reference {
-            font-size: 0.9em;
-            margin-left: 20px;
-            text-indent: -20px;
-        }
-        .subsection {
-            margin-top: 30px;
-        }
-        .authors {
-            font-style: italic;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        p {
-            margin-bottom: 15px;
-        }
-        .variable {
-            font-style: italic;
-        }
-    </style>
-</head>
+
 <body>
 
-<h1>Optimal Transformations Selection for Feature Augmentation</h1>
-
-<div class="authors">
-Venkatesh, Vaddadi, Raji Susan Mathew, and Phaneendra K. Yalavarthy. "Optimal Transformations Selection for Feature Augmentation in Deep Learning Models." Journal of Machine Learning Research (2024): 1-17.
-<a href="#">[manuscript]</a>
-</div>
 
 <h2>Optimal Transformations Selection Problem</h2>
 <p>This section focuses on the selection of those transformations that are statistically significant with positive correlation to the correct prediction of the model, referred to as optimal transformations in the remainder of this paper.</p>
@@ -185,10 +102,6 @@ F̃ᵢ = { [Fᵢ, Fᵢ'], if Tᵢ ≠ ∅<br>Fᵢ, otherwise } <span class="equa
 </div>
 </div>
 
-<h2>References</h2>
-<div class="reference">[1] Hosmer, D. W., Lemeshow, S., & Sturdivant, R. X. (2013). Applied logistic regression. John Wiley & Sons.</div>
-<div class="reference">[2] Ottoni, A. L. C., et al. (2023). Tuning data augmentation for deep learning models. Journal of Machine Learning Research.</div>
-<div class="reference">[3] Myung, I. J. (2003). Tutorial on maximum likelihood estimation. Journal of Mathematical Psychology.</div>
 
 </body>
 </html>
